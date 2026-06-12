@@ -5,7 +5,7 @@ import java.util.LinkedList;
 
 public class Bill {
 
-    private LinkedList<BillDetail> detalles;
+    private LinkedList<BillDetail> detalles = new LinkedList<>();
     private String idFactura;
     private Date fechaEmision;
     private Cliente cliente;
@@ -17,6 +17,7 @@ public class Bill {
     Vendedor vendedor;
 
     public Bill(Cliente cliente , Vendedor vendedor , String numeroFactura ,float iva){
+        this.idFactura =IdGenerator.generarId("Factura");
         this.cliente = cliente;
         this.vendedor = vendedor;
         this.numeroFactura = numeroFactura;
@@ -28,7 +29,18 @@ public class Bill {
 
     }
 
-    public double calcularSubTotal() { return 0;}
+    public void addDetail(BillDetail detail){
+        detalles.add(detail);
+        calcularTotal();
+        subTotal += detail.getSubtotal();
+        total = subTotal +(subTotal*iva);
+    }
+
+    
+    public float calcularTotal() {
+        total = subTotal + (subTotal * iva);
+        return total;
+    }
 
     public String getIdFactura() {
         return idFactura;
